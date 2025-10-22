@@ -1,0 +1,90 @@
+[
+  {
+    "id": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+    "value": "test",
+    "properties": {
+      "length": 4,
+      "is_palindrome": false,
+      "unique_characters": 3,
+      "word_count": 1,
+      "sha256_hash": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+      "character_frequency_map": {
+        "t": 2,
+        "e": 1,
+        "s": 1
+      }
+    },
+    "created_at": "2025-10-22T17:44:53.489Z"
+  },
+  {
+    "id": "765cc52b3dbc1bb8ec279ef9c8ec3d0f251c0c92a6ecdc1870be8f7dc7538b21",
+    "value": "madam",
+    "properties": {
+      "length": 5,
+      "is_palindrome": true,
+      "unique_characters": 3,
+      "word_count": 1,
+      "sha256_hash": "765cc52b3dbc1bb8ec279ef9c8ec3d0f251c0c92a6ecdc1870be8f7dc7538b21",
+      "character_frequency_map": {
+        "m": 2,
+        "a": 2,
+        "d": 1
+      }
+    },
+    "created_at": "2025-10-22T18:46:34.713Z"
+  },
+  {
+    "id": "9e2bce7d425e3aa413874a25e8249c718849d7d0c8c4c062b9a2803d4b82d530",
+    "value": "kayak",
+    "properties": {
+      "length": 5,
+      "is_palindrome": true,
+      "unique_characters": 3,
+      "word_count": 1,
+      "sha256_hash": "9e2bce7d425e3aa413874a25e8249c718849d7d0c8c4c062b9a2803d4b82d530",
+      "character_frequency_map": {
+        "k": 2,
+        "a": 2,
+        "y": 1
+      }
+    },
+    "created_at": "2025-10-22T19:10:00.448Z"
+  },
+  {
+    "id": "e24ef8f938288781086e27a9433a4d0472a1dbaac31cfe54be2c3525fa30cb2e",
+    "value": "eden",
+    "properties": {
+      "length": 4,
+      "is_palindrome": false,
+      "unique_characters": 3,
+      "word_count": 1,
+      "sha256_hash": "e24ef8f938288781086e27a9433a4d0472a1dbaac31cfe54be2c3525fa30cb2e",
+      "character_frequency_map": {
+        "e": 2,
+        "d": 1,
+        "n": 1
+      }
+    },
+    "created_at": "2025-10-22T19:10:08.778Z"
+  },
+  {
+    "id": "a441b15fe9a3cf56661190a0b93b9dec7d04127288cc87250967cf3b52894d11",
+    "value": "random",
+    "properties": {
+      "length": 6,
+      "is_palindrome": false,
+      "unique_characters": 6,
+      "word_count": 1,
+      "sha256_hash": "a441b15fe9a3cf56661190a0b93b9dec7d04127288cc87250967cf3b52894d11",
+      "character_frequency_map": {
+        "r": 1,
+        "a": 1,
+        "n": 1,
+        "d": 1,
+        "o": 1,
+        "m": 1
+      }
+    },
+    "created_at": "2025-10-22T19:10:39.840Z"
+  }
+]
