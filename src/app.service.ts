@@ -83,7 +83,7 @@ export class AppService {
 
     const analysis: StringAnalysis = {
       id: sha256Hash,
-      value: value,
+      value,
       properties: {
         length,
         is_palindrome: isPalindrome,
@@ -97,7 +97,6 @@ export class AppService {
 
     this.strings.push(analysis);
     this.saveData();
-    this.logger.log(`String analysed and stored successfully`);
     return analysis;
   }
 
@@ -110,6 +109,7 @@ export class AppService {
     if (!foundString) {
       throw new HttpException('String not found', HttpStatus.NOT_FOUND);
     }
+    // Return full consistent object
     return foundString;
   }
 
@@ -144,6 +144,7 @@ export class AppService {
     return results;
   }
 
+  // Natural language filter
   public filterStringsNatural(queryText: string) {
     if (!queryText || typeof queryText !== 'string') {
       throw new HttpException(
@@ -178,7 +179,7 @@ export class AppService {
     }
 
     const containsMatch = queryText.match(
-      /containing (?:the word|character)?\s*["']?([a-z0-9]+)["']?/,
+      /contain(?:s|ing)? (?:the word|character)?\s*["']?([a-z0-9]+)["']?/,
     );
     if (containsMatch) {
       const char = containsMatch[1];
