@@ -52,48 +52,41 @@ export class AppService {
   }
 
   public async stringAnalyser(value: string) {
+    //Invalid data type for value (must be string)
+    if (typeof value !== 'string') {
+      this.logger.log(`Invalid data type for value`);
+      return {
+        statusCode: 400,
+        message: "Invalid data type for 'value'. Must be string.",
+      };
+    }
+    //Invalid req (empty string/passing a non-string value)
+    if (value === null || value === undefined || value.trim() === '') {
+      this.logger.log(`Invalid string value`);
+      return { statusCode: 400, message: "Missing or empty 'value' field." };
+    }
+    //check if string already exists
+    const existingIndex = this.strings.findIndex((str) => str.value === value);
+    if (existingIndex !== -1) {
+      this.logger.log('String already exists');
+      return { statusCode: 409, message: 'String already exists' };
+    }
     //length of the string
     const length = value.length;
-    //Check if string is palindrome
-    const isPalindrome =
-      value === value.toLowerCase().split('').reverse().join('');
+    //Check if string is palindrome (case-insensitive)
+    const normalized = value.toLowerCase();
+    const isPalindrome = normalized === normalized.split('').reverse().join('');
     //Check for unique characters in the string
     const uniqueChars = new Set(value).size;
     //Check the word count in the string
     const wordCount = value.trim() ? value.trim().split(/\s+/).length : 0;
-    //Generate sha256 hash for uninque id of the string
-    const crypto = require('crypto');
+    //Generate sha256 hash for unique id of the string
     const sha256Hash = crypto.createHash('sha256').update(value).digest('hex');
     //character frequency map
     const charFrequencyMap: Record<string, number> = {};
     for (const char of value) {
       charFrequencyMap[char] = (charFrequencyMap[char] || 0) + 1;
     }
-
-    //Invalid data type for value (must be string)
-    const invalidDataType = typeof value !== 'string';
-    if (invalidDataType) {
-      this.logger.log(`Invalid data type for value`);
-      throw new HttpException('Invalid data type for value', 422);
-    }
-
-    //check if string already exists
-    const existingIndex = this.strings.findIndex((str) => str.value === value);
-    if (existingIndex !== -1) {
-      this.logger.log('String already exists');
-      throw new HttpException('String already exists', 409);
-    }
-
-    //Invalid req (empty string/passing a non-string value)
-    const invalidString =
-      value === null ||
-      value === undefined ||
-      (typeof value === 'string' && value.trim() === '');
-    if (invalidString) {
-      this.logger.log(`Invalid string value`);
-      throw new HttpException('Invalid string value', 400);
-    }
-
     const analysis: StringAnalysis = {
       id: sha256Hash,
       value: value,
@@ -107,12 +100,10 @@ export class AppService {
       },
       created_at: new Date().toISOString(),
     };
-
     //Store the string in the interface shape
     this.strings.push(analysis);
     this.saveData();
     this.logger.log(`String analysed and stored successfully`);
-
     return analysis;
   }
 
@@ -180,37 +171,27 @@ export class AppService {
     if (!queryText || typeof queryText !== 'string') {
       throw new HttpException('Query must be a valid string', 400);
     }
-
     queryText = queryText.toLowerCase();
     let results = [...this.strings];
-
-    if (results.length === 0) {
-      throw new HttpException('No strings exist in the system', 404);
-    }
-
     // Detect filters using simple keyword matching
     if (queryText.includes('palindrome')) {
       results = results.filter((s) => s.properties.is_palindrome);
     }
-
     const minLengthMatch = queryText.match(/longer than (\d+)/);
     if (minLengthMatch) {
       const min = parseInt(minLengthMatch[1]);
       results = results.filter((s) => s.properties.length > min);
     }
-
     const maxLengthMatch = queryText.match(/shorter than (\d+)/);
     if (maxLengthMatch) {
       const max = parseInt(maxLengthMatch[1]);
       results = results.filter((s) => s.properties.length < max);
     }
-
     const wordCountMatch = queryText.match(/(\d+)\s+words?/);
     if (wordCountMatch) {
       const count = parseInt(wordCountMatch[1]);
       results = results.filter((s) => s.properties.word_count === count);
     }
-
     const containsMatch = queryText.match(
       /containing (?:the word|character)?\s*["']?([a-z0-9]+)["']?/,
     );
@@ -218,11 +199,6 @@ export class AppService {
       const char = containsMatch[1];
       results = results.filter((s) => s.value.toLowerCase().includes(char));
     }
-
-    if (results.length === 0) {
-      throw new HttpException('No results found for matching your query', 404);
-    }
-
     return results;
   }
 
